@@ -1,0 +1,64 @@
+{
+  "name": "@xlou/xfetch",
+  "version": "1.0.0",
+  "main": "./dist/es/xfetch.min.js",
+  "module": "./dist/es/xfetch.min.js",
+  "browser": "./dist/umd/xfetch.min.js",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "umd": "./dist/umd/xfetch.min.js",
+      "es": "./dist/es/xfetch.min.js",
+      "default": "./dist/es/xfetch.min.js"
+    }
+  },
+  "type": "module",
+  "types": "./index.d.ts",
+  "keywords": [
+    "fetch",
+    "xhr",
+    "XMLHttpRequest",
+    "ajax"
+  ],
+  "description": "Use fetch/xhr more conveniently and quickly.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omlou/xfetch.git"
+  },
+  "unpkg": "dist/umd/xfetch.min.js",
+  "jsdelivr": "dist/umd/xfetch.min.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production rollup -c",
+    "start": "gulp serve",
+    "update": "cross-env NODE_ENV=development && gulp clear && rollup -c",
+    "commit": "gulp simplify&&npm publish --access public&&gulp dev",
+    "serve": "node app.js"
+  },
+  "author": "Louis Xu",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.1",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-webserver": "^0.9.1",
+    "multer": "^1.4.5-lts.1",
+    "rollup": "^3.24.0",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^2.0.2",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@xlou/simulate": "^1.0.6",
+    "axios": "^1.4.0",
+    "clear-ajax": "^1.0.0"
+  }
+}

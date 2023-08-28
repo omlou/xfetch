@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "types": [],
+    "strict": true,
+    "noEmit": true,
+    "target": "ESNext",
+    "noImplicitThis": false
+  }
+}

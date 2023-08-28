@@ -1,5 +1,5 @@
-export interface XHRHeaders{
-  [Symbol.iterator]? (): IterableIterator<[string, string]>
+export interface XHRHeaders {
+  [Symbol.iterator]?(): IterableIterator<[string, string]>
   append(name: string, value: string): void
   delete(name: string): void
   get(name: string): string | null
@@ -17,16 +17,17 @@ interface Hs {
 const hs: Hs = {}
 
 export function XHRHeaders() {}
+
 Object.assign(XHRHeaders.prototype, {
-  get: function(key: string): string | null {
+  get(key: string): string | null {
     let res: any = hs[key]
     if (res === undefined) res = null
     return res
   },
-  set: function(key: string, value: string): void {
+  set(key: string, value: string): void {
     hs[key] = value
   },
-  append: function(key: string, value: string): void {
+  append(key: string, value: string): void {
     let val = hs[key]
     if (val === undefined) {
       hs[key] = value
@@ -34,30 +35,37 @@ Object.assign(XHRHeaders.prototype, {
       hs[key] = val + ", " + value
     }
   },
-  delete: function(key: string): void {
+  delete(key: string): void {
     delete hs[key]
   },
-  has: function(key: string): boolean {
-    return hs.hasOwnProperty(key)
+  has(key: string): boolean {
+    return Object.prototype.hasOwnProperty.call(hs, key)
   },
-  keys: function(): IterableIterator<string> {
-    return Object.keys(hs).values()
+  keys(): IterableIterator<string> {
+    return Object.keys(hs)[Symbol.iterator]()
   },
-  values: function(): IterableIterator<string> {
-    return (Object.values(hs) as Array<string>).values()
+  values(): IterableIterator<string> {
+    return (Object.values(hs) as string[])[Symbol.iterator]()
   },
-  entries: function(): IterableIterator<[string, string]> {
-    return (Object.entries(hs) as Array<[string, string]>).values()
+  entries(): IterableIterator<[string, string]> {
+    const keys = Object.keys(hs)
+    const entries = keys.map((key) => [key, hs[key]])
+    return (entries as Array<[string, string]>)[Symbol.iterator]()
   },
-  forEach: function(callback: (value: string, key: string, parent: any) => void, thisArg?: any) {
-    for (let i in hs) {
-      thisArg ? callback.call(thisArg, hs[i], i, hs) : callback(hs[i], i, hs)
+  forEach(callback: (value: string, key: string, parent: any) => void, thisArg?: any) {
+    for (let key in hs) {
+      if (Object.prototype.hasOwnProperty.call(hs, key)) {
+        thisArg ? callback.call(thisArg, hs[key], key, hs) : callback(hs[key], key, hs)
+      }
     }
-  },
+  }
 })
+
 if (Symbol && Symbol.iterator) {
-  XHRHeaders.prototype[Symbol.iterator] = function(): IterableIterator<[string, string]> {
-    return (Object.entries(hs) as Array<[string, string]>).values()
+  XHRHeaders.prototype[Symbol.iterator] = function (): IterableIterator<[string, string]> {
+    const keys = Object.keys(hs)
+    const entries = keys.map((key) => [key, hs[key]])
+    return (entries as Array<[string, string]>)[Symbol.iterator]()
   }
 }
 
@@ -79,7 +87,17 @@ export interface XHRFetchResponse {
   text(): Promise<string>
 }
 
-export function XHRFetchResponse(body: Blob, bodyUsed: boolean, headers: any, ok: boolean, redirected: boolean, status: number, statusText: string, type: string, url: string) {
+export function XHRFetchResponse(
+  body: Blob,
+  bodyUsed: boolean,
+  headers: any,
+  ok: boolean,
+  redirected: boolean,
+  status: number,
+  statusText: string,
+  type: string,
+  url: string
+) {
   this.body = body
   this.bodyUsed = bodyUsed
   this.headers = headers
@@ -90,59 +108,63 @@ export function XHRFetchResponse(body: Blob, bodyUsed: boolean, headers: any, ok
   this.type = type
   this.url = url
 }
+
 Object.assign(XHRFetchResponse.prototype, {
-  blob: async function (): Promise<Blob> {
+  async blob(): Promise<Blob> {
     return this.body
   },
-  arrayBuffer: async function (): Promise<ArrayBuffer> {
+  async arrayBuffer(): Promise<ArrayBuffer> {
     return this.body.arrayBuffer()
   },
-  clone: function (): XHRFetchResponse {
+  clone(): XHRFetchResponse {
     return this
   },
-  formData: async function (): Promise<FormData> {
+  async formData(): Promise<FormData> {
     const formData = new FormData()
-    const {type, data} = await readBlob(this.body)
+    const { type, data } = await readBlob(this.body)
     switch (type) {
       case "text": {
         let json = null
         try {
           json = JSON.parse(data)
-          for (let i in json) {
-            formData.append(i, json[i])
+          for (let key in json) {
+            if (Object.prototype.hasOwnProperty.call(json, key)) {
+              formData.append(key, json[key])
+            }
           }
           return formData
-        } catch(exc) {
+        } catch (exc) {
           throw "Target cannot be converted to FormData."
         }
       }
       default: {
-        formData.append('file', data)
+        formData.append("file", data)
         return formData
       }
     }
   },
-  json: async function (): Promise<any> {
+  async json(): Promise<any> {
     let json = null
-    const {type, data} = await readBlob(this.body)
+    const { type, data } = await readBlob(this.body)
     if (type === "text") {
       try {
         json = JSON.parse(data)
         return json
-      } catch(exc) {
+      } catch (exc) {
         throw "Target is not json."
       }
     } else {
       throw "Target is not json."
     }
   },
-  text: async function (): Promise<any> {
-    const {data} = await readBlob(this.body, "text/plain")
+  async text(): Promise<any> {
+    const { data } = await readBlob(this.body, "text/plain")
     return data
   }
 })
+
 function readBlob(blob: Blob, type?: string): Promise<any> {
-  const fileType = (type || blob.type)
+  const fileType = type || blob.type
   return new Promise((resolve, reject) => {
     switch (fileType) {
       case "text/plain":
@@ -150,7 +172,7 @@ function readBlob(blob: Blob, type?: string): Promise<any> {
       case "": {
         const reader = new FileReader()
         reader.onload = () => {
-          const text = <string>(reader.result)
+          const text = reader.result as string
           resolve({
             type: "text",
             data: text
