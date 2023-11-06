@@ -1,6 +1,6 @@
 {
   "name": "@xlou/xfetch",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "./dist/es/xfetch.min.js",
   "module": "./dist/es/xfetch.min.js",
   "browser": "./dist/umd/xfetch.min.js",
@@ -35,7 +35,7 @@
   "unpkg": "dist/umd/xfetch.min.js",
   "jsdelivr": "dist/umd/xfetch.min.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup -c",
+    "build": "gulp clear && rollup -c",
     "start": "gulp serve",
     "upgrade": "gulp upgrade --host %npm_config_host%",
     "serve": "node app.js"

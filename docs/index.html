@@ -9,33 +9,31 @@
       name: "Tom",
       age: 18
     })
-    // xhrFetch("http://127.0.0.1:3000/get?id=1")
-    // .then(res=>{
-    //   console.log("xhrFetch-Get",res)
-    // })
-    // fetch("http://127.0.0.1:3000/get?id=1")
-    // .then(res=>{
-    //   console.log("fetch-Get",res)
-    // })
+    xfetch.xhrFetch("http://127.0.0.1:3000/get?id=1")
+    .then(res=>{
+      console.log("xhrFetch-Get",res)
+    })
+    fetch("http://127.0.0.1:3000/get?id=1")
+    .then(res=>{
+      console.log("fetch-Get",res)
+    })
     let formData = new FormData()
     formData.set("name", "Tom")
     formData.set("age", 18)
-    // xhrFetch("http://127.0.0.1:3000/none?id=1", {
-    //   method: "post",
-    //   headers: {
-    //     // "Content-Type": "application/json;charset=UTF-8"
-    //     // "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-    //   },
-    //   body: formData
-    // })
-    // .then(res=>{
-    //   console.log("xhrFetch-Post",res)
-    //   // res.json()
-    //   // .then(e=>{console.log("json",e)})
-    // })
-    // .catch(exc=>{
-    //   console.log("xhrFetch-Post-exc",exc)
-    // })
+    xfetch.xhrFetch("http://127.0.0.1:3000/none?id=1", {
+      method: "post",
+      headers: {
+        // "Content-Type": "application/json;charset=UTF-8"
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+      },
+      body: formData
+    })
+    .then(res=>{
+      console.log("xhrFetch-Post",res)
+    })
+    .catch(exc=>{
+      console.log("xhrFetch-Post-exc",exc)
+    })
     xfetch("http://127.0.0.1:3000/none?id=1", {
       method: "post",
       headers: {

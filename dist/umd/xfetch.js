@@ -235,7 +235,7 @@
         });
     }
 
-    const contentTypeObj = {
+    const ContentType = {
         json: "application/json;charset=UTF-8",
         urlencoded: "application/x-www-form-urlencoded;charset=UTF-8",
         formData: "multipart/form-data",
@@ -336,11 +336,11 @@
         if (contentType) {
             if (!headers) {
                 init.headers = {
-                    "Content-Type": contentTypeObj[contentType]
+                    "Content-Type": ContentType[contentType]
                 };
             }
             else if (!getContentType(headers)) {
-                setContentType(headers, contentTypeObj[contentType]);
+                setContentType(headers, ContentType[contentType]);
             }
         }
         /* handling the 'data' */
