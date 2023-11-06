@@ -1,6 +1,6 @@
-import { xhrFetch } from "./src/xhrfetch"
-import { XHRHeaders, XHRFetchResponse } from "./src/classes"
-import { xfetch, PropType, XFContentType, XFResponseType, XfetchInit, XfetchResponse, queryString } from "./src/main"
+import { xhrFetch } from "./xhrfetch"
+import { XHRHeaders, XHRFetchResponse } from "./classes"
+import { xfetch, PropType, XFContentType, XFResponseType, XfetchInit, XfetchResponse, queryString } from "./main"
 
 declare global {
   interface Window {

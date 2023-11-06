@@ -7,7 +7,6 @@ import dts from 'rollup-plugin-dts'
 
 const name="xfetch"
 const globalName="xfetch"
-const {NODE_ENV}=process.env
 const commonPlugins=[
   resolve(),
   commonjs(),
@@ -51,7 +50,7 @@ const config=[
     plugins: commonPlugins
   },
   {
-    input: "index.ts",
+    input: "src/index.ts",
     output: {
       file: 'index.d.ts',
       format: 'es',
