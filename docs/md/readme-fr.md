@@ -1,4 +1,4 @@
-## Langue
+## Langues
 
 * [English](https://github.com/omlou/xfetch#readme)
 * [简体中文](https://github.com/omlou/xfetch/blob/master/docs/md/readme-zh.md)
@@ -8,19 +8,19 @@
 
 ## Introduction
 
-* Use `fetch` more simply and conveniently.
-* Don't worry if your browser environment doesn't support `fetch`. If you are using an older browser, `xfetch` will simulate `fetch` using `XMLHttpRequest`.
-* Respect native behavior and focus on performance.
+* Utilisez fetch de manière plus simple et plus rapide.
+* Ne vous inquiétez pas si votre environnement de navigation ne prend pas en charge fetch. Si vous utilisez un navigateur plus ancien, xfetch utilisera XMLHttpRequest pour simuler fetch.
+* Respecte les normes natives et met l'accent sur les performances.
 
-## Usage
+## Utilisation
 
-### Import via Script Tag
+### Importation via la balise script
 
 ```html
-<script src="https://unpkg.com/@xlou/xfetch@1.0.2/dist/umd/xfetch.min.js"></script>
-<!-- It is recommended to download and use locally. -->
+<script src="https://unpkg.com/@xlou/xfetch@1.0.3/dist/umd/xfetch.min.js"></script>
+<!-- Il est recommandé de télécharger le fichier pour l'utiliser. -->
 <script>
-  /* After including this JS file, the xfetch object will be assigned to the window. */
+  /* Après avoir importé ce fichier JavaScript, l'objet xfetch sera attribué à la fenêtre. */
   xfetch("https://xxx.com", {
     method: "post",
     query: {
@@ -36,17 +36,17 @@
 </script>
 ```
 
-### Use in Node.js Projects
+### Utilisation dans un projet Node.js
 
-Install
+Installation
 
-```bash
+``` bash
 npm i @xlou/xfetch -S
 ```
 
-Usage
+Utilisation
 
-```javascript
+``` javascript
 import xfetch from '@xlou/xfetch'
 
 xfetch("https://xxx.com", {
@@ -67,32 +67,32 @@ xfetch("https://xxx.com", {
 
 ### xfetch
 
-#### Get
+#### Importation
 
-Script Tag :&emsp;`window.xfetch`
+Balise script :&emsp;`window.xfetch`
 
 Module :&emsp;`import xfetch from "@xlou/xfetch"`
 
-#### Usage
+#### Utilisation
 
-```typescript
+``` typescript
 xfetch("https://xxx.com", {
   method: "post",
-  query: { // Converted to URL parameters
+  query: { // Converti en paramètres d'URL
     id: 1
   },
-  data: { // Converted to body parameters; if body is specified, this parameter will be ignored
+  data: { // Converti en paramètres du corps, si le corps est spécifié en même temps, ce paramètre sera ignoré
     name: "Tom",
     age: 18
   },
-  contentType: "json", // Specify the Content-Type in the request headers
-  responseType: "json" // Enable response data preprocessing and specify the type of response data
+  contentType: "json", // Spécifie le Content-Type dans les en-têtes de la requête
+  responseType: "json" // Active la prétraitement des données de réponse et spécifie le type de données de réponse
 })
 ```
 
 #### Types
 
-```typescript
+``` typescript
 function xfetch(input: RequestInfo | URL, init?: XfetchInit | undefined): Promise<XfetchResponse>
 
 type RequestInfo = Request | string
@@ -116,161 +116,97 @@ const ContentType: { [prop: string]: string } = {
 }
 ```
 
-#### Parameter Description
+#### Description des paramètres
 
 query
 
-* This parameter supports JavaScript objects and will be converted into URL parameter strings and appended to the request URL.
-* It will not interfere with the original parameters in the request URL.
+* Ce paramètre prend en charge les objets JavaScript et est converti en une chaîne de paramètres d'URL lors de l'envoi de la requête.
+* Il n'affectera pas les paramètres d'URL existants de l'adresse de la requête.
 
 data
 
-* When sending the request, it will be converted into body parameters based on the Content-Type value in the headers.
-* If the body parameter is specified at the same time, this parameter will be ignored.
-* This parameter supports regular JavaScript objects.
-  * When Content-Type is "application/json", data will be converted into a JSON string.
-  * When Content-Type is "application/x-www-form-urlencoded", data will be converted into a URL string.
-  * When Content-Type is "multipart/form-data", data will be converted into FormData.
-  * If data can be converted to JSON and Content-Type is not specified, Content-Type will be set to "application/json".
+* Lors de l'envoi de la requête, il est converti en paramètres du corps en fonction de la valeur Content-Type dans les en-têtes de la requête.
+* Si le corps est spécifié en même temps, ce paramètre sera ignoré.
+* Ce paramètre prend en charge les objets JavaScript courants.
+  * Lorsque le Content-Type est application/json, les données sont converties en chaînes JSON.
+  * Lorsque le Content-Type est application/x-www-form-urlencoded, les données sont converties en chaînes URL.
+  * Lorsque le Content-Type est multipart/form-data, les données sont converties en FormData.
+  * Si les données peuvent être converties en JSON et que le Content-Type n'est pas spécifié, le Content-Type est automatiquement défini sur application/json.
 
 contentType
 
-* Specify the Content-Type in the request headers.
-* If Content-Type is already specified in the headers, this parameter will be ignored.
-* contentType values correspond to Content-Type in the headers:
-  * json: "application/json;charset=UTF-8"
-  * urlencoded: "application/x-www-form-urlencoded;charset=UTF-8"
-  * formData: "multipart/form-data"
-  * text: "text/plain;charset=UTF-8"
-  * xml: "application/xml;charset=UTF-8"
-  * stream: "application/octet-stream"
+* Spécifie le Content-Type dans les en-têtes de la requête.
+* Si le Content-Type est déjà spécifié dans les en-têtes, ce paramètre sera ignoré.
+* Valeurs possibles pour contentType et les Content-Type correspondants dans les en-têtes :
+  * json:&ensp; "application/json;charset=UTF-8"
+  * urlencoded:&ensp; "application/x-www-form-urlencoded;charset=UTF-8"
+  * formData:&ensp; "multipart/form-data"
+  * text:&ensp; "text/plain;charset=UTF-8"
+  * xml:&ensp; "application/xml;charset=UTF-8"
+  * stream:&ensp; "application/octet-stream"
 
 responseType
 
-* If this parameter is not specified, the response data will be the same as using fetch.
-* If this parameter is specified, it means that response data preprocessing is enabled, and a preprocessed synchronous data will be returned.
+* Si ce paramètre n'est pas spécifié, les données de réponse seront les mêmes que pour fetch.
+* Si ce paramètre est spécifié, cela signifie que le prétraitement des données de réponse est activé, et des données prétraitées seront renvoyées de manière synchrone.
 
-  ```javascript
-  /* Getting data normally */
+  ``` javascript
+  /* Récupération normale des données */
   xfetch("https://xxx.com")
   .then(async res => {
     let json = await res.json()
   })
 
-  /* Specifying responseType as json */
+  /* Spécification de responseType en tant que json */
   xfetch("https://xxx.com", {
     responseType: "json"
   })
   .then(res => {
     let json = res.jsonSync
-    /* If responseType is set to blob, use blobSync, and so on. */
+    /* Si responseType est défini sur blob, utilisez blobSync, et ainsi de suite. */
   })
   ```
 
-Other parameters are the same as fetch.
+Les autres paramètres sont les mêmes que pour fetch.
 
 ### xhrFetch
 
-#### Get
+#### Importation
 
-Script Tag :&emsp;`xfetch.xhrFetch`
+Balise script :&emsp;`xfetch.xhrFetch`
 
 Module :&emsp;`import { xhrFetch } from "@xlou/xfetch"`
 
-#### Usage
+#### Utilisation
 
-```typescript
-xfetch("https://xxx.com", {
-  method: "post",
-  query: { // Converted to URL parameters
-    id: 1
-  },
-  data: { // Converted to body parameters; if body is specified, this parameter will be ignored
-    name: "Tom",
-    age: 18
-  },
-  contentType: "json", // Specify the Content-Type in the request headers
-  responseType: "json" // Enable response data preprocessing and specify the type of response data
-})
-```
+Utilisation identique à fetch, mais implémentée à l'aide de XMLHttpRequest. Il est recommandé d'utiliser xfetch à la place de cela
+
+.
+
+Les paramètres de requête tels que cache, mode, signal, keepalive, redirect, integrity, referrer et referrerPolicy définis dans la demande sont ignorés.
+
+Dans les paramètres de réponse, le corps est de type Blob au lieu de ReadableStream.
 
 #### Types
 
-```typescript
-function xfetch(input: RequestInfo | URL, init?: XfetchInit | undefined): Promise<XfetchResponse>
+``` typescript
+function xhrFetch(input: RequestInfo | URL, init?: RequestInit | undefined): Promise<XHRFetchResponse>;
 
-type RequestInfo = Request | string
-
-interface XfetchInit extends RequestInit {
-  query?: { [prop: string]: any }
-  data?: BodyInit | null | { [prop: string]: any }
-  contentType?: "json" | "urlencoded" | "formData" | "text" | "xml" | "stream"
-  responseType?: "json" | "text" | "blob" | "arrayBuffer" | "formData"
-}
-
-type BodyInit = ReadableStream | XMLHttpRequestBodyInit
-
-const ContentType: { [prop: string]: string } =
-
- {
-  json: "application/json;charset=UTF-8",
-  urlencoded: "application/x-www-form-urlencoded;charset=UTF-8",
-  formData: "multipart/form-data",
-  text: "text/plain;charset=UTF-8",
-  xml: "application/xml;charset=UTF-8",
-  stream: "application/octet-stream"
+interface XHRFetchResponse {
+  readonly body: Blob | null
+  readonly bodyUsed: boolean
+  readonly headers: any
+  readonly ok: boolean
+  readonly redirected: boolean
+  readonly status: number
+  readonly statusText: string
+  readonly type: string
+  readonly url: string
+  clone(): XHRFetchResponse
+  arrayBuffer(): Promise<ArrayBuffer>
+  blob(): Promise<Blob>
+  formData(): Promise<FormData>
+  json(): Promise<any>
+  text(): Promise<string>
 }
 ```
-
-#### Parameter Description
-
-query
-
-* This parameter supports JavaScript objects and will be converted into URL parameter strings and appended to the request URL.
-* It will not interfere with the original parameters in the request URL.
-
-data
-
-* When sending the request, it will be converted into body parameters based on the Content-Type value in the headers.
-* If the body parameter is specified at the same time, this parameter will be ignored.
-* This parameter supports regular JavaScript objects.
-  * When Content-Type is "application/json", data will be converted into a JSON string.
-  * When Content-Type is "application/x-www-form-urlencoded", data will be converted into a URL string.
-  * When Content-Type is "multipart/form-data", data will be converted into FormData.
-  * If data can be converted to JSON and Content-Type is not specified, Content-Type will be set to "application/json".
-
-contentType
-
-* Specify the Content-Type in the request headers.
-* If Content-Type is already specified in the headers, this parameter will be ignored.
-* contentType values correspond to Content-Type in the headers:
-  * json: "application/json;charset=UTF-8"
-  * urlencoded: "application/x-www-form-urlencoded;charset=UTF-8"
-  * formData: "multipart/form-data"
-  * text: "text/plain;charset=UTF-8"
-  * xml: "application/xml;charset=UTF-8"
-  * stream: "application/octet-stream"
-
-responseType
-
-* If this parameter is not specified, the response data will be the same as using fetch.
-* If this parameter is specified, it means that response data preprocessing is enabled, and a preprocessed synchronous data will be returned.
-
-  ```javascript
-  /* Getting data normally */
-  xfetch("https://xxx.com")
-  .then(async res => {
-    let json = await res.json()
-  })
-
-  /* Specifying responseType as json */
-  xfetch("https://xxx.com", {
-    responseType: "json"
-  })
-  .then(res => {
-    let json = res.jsonSync
-    /* If responseType is set to blob, use blobSync, and so on. */
-  })
-  ```
-
-Other parameters are the same as fetch.

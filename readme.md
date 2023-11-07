@@ -9,18 +9,18 @@
 ## Introduction
 
 * Simplify and expedite your use of fetch.
-* Don't worry if your browser environment lacks fetch; if you are using an older browser, xfetch will simulate fetch using XMLHttpRequest.
-* Respects the native behavior and focuses on performance.
+* Don't worry if your browser environment lacks fetch support; if you are using an older browser, xfetch will emulate fetch using XMLHttpRequest.
+* Respects the native implementation and prioritizes performance.
 
 ## Usage
 
-### Import via Script Tag
+### Using Script Tags for Import
 
 ```html
-<script src="https://unpkg.com/@xlou/xfetch@1.0.2/dist/umd/xfetch.min.js"></script>
-<!-- It is recommended to download and use locally -->
+<script src="https://unpkg.com/@xlou/xfetch@1.0.3/dist/umd/xfetch.min.js"></script>
+<!-- It is recommended to download and use the script locally -->
 <script>
-  /* After importing this JS file, the xfetch object will be assigned to the window */
+  /* After including this script, the xfetch object is assigned to the window */
   xfetch("https://xxx.com", {
     method: "post",
     query: {
@@ -36,7 +36,7 @@
 </script>
 ```
 
-### Use in Node.js Projects
+### Using in Node.js Projects
 
 Installation
 
@@ -67,7 +67,7 @@ xfetch("https://xxx.com", {
 
 ### xfetch
 
-#### Get
+#### Retrieval
 
 Script Tag: `window.xfetch`
 
@@ -81,12 +81,12 @@ xfetch("https://xxx.com", {
   query: { // Converted to URL parameters
     id: 1
   },
-  data: { // Converted to request body parameters; if the body parameter is specified simultaneously, this parameter will be ineffective
+  data: { // Converted to body parameters; if body is specified simultaneously, this parameter will be ignored
     name: "Tom",
     age: 18
   },
-  contentType: "json", // Specify the Content-Type in the request headers
-  responseType: "json" // Enable response data preprocessing; specify the type of response data
+  contentType: "json", // Specifies the Content-Type in the request headers
+  responseType: "json" // Enables preprocessing of response data and specifies the response data type
 })
 ```
 
@@ -120,38 +120,38 @@ const ContentType: { [prop: string]: string } = {
 
 query
 
-* This parameter supports JavaScript objects, and it will be converted into URL parameter strings and appended to the request URL when sending the request.
-* It will not interfere with the original parameters in the request URL.
+* This parameter supports JavaScript objects and will be converted into a URL parameter string appended to the request URL.
+* It will not interfere with any existing parameters in the request URL.
 
 data
 
-* When sending a request, it will be converted into a body parameter based on the Content-Type value in the headers.
-* If the body parameter is specified simultaneously, this parameter will be ineffective.
-* This parameter supports general JavaScript objects:
-  * When the Content-Type is application/json, data will be converted into a JSON string.
-  * When the Content-Type is application/x-www-form-urlencoded, data will be converted into a URL-encoded string.
-  * When the Content-Type is multipart/form-data, data will be converted into FormData.
-  * If data can be converted into JSON, and Content-Type is not specified, the Content-Type will be set to application/json.
+* When sending the request, it will be converted into body parameters based on the Content-Type value in the headers.
+* If the body parameter is specified simultaneously, this parameter will be ignored.
+* This parameter supports general JavaScript objects.
+  * When Content-Type is "application/json," data will be converted to a JSON string.
+  * When Content-Type is "application/x-www-form-urlencoded," data will be converted to a URL-encoded string.
+  * When Content-Type is "multipart/form-data," data will be converted to FormData.
+  * If data can be converted to JSON and Content-Type is not specified, the Content-Type will be set to "application/json."
 
 contentType
 
-* Specify the Content-Type in the request headers.
-* If the Content-Type is already specified in the headers, this parameter will be ineffective.
-* The contentType values correspond to the Content-Type in the headers:
-  * json:&ensp; "application/json;charset=UTF-8"
-  * urlencoded:&ensp; "application/x-www-form-urlencoded;charset=UTF-8"
-  * formData:&ensp; "multipart/form-data"
-  * text:&ensp; "text/plain;charset=UTF-8"
-  * xml:&ensp; "application/xml;charset=UTF-8"
-  * stream:&ensp; "application/octet-stream"
+* Specifies the Content-Type in the request headers.
+* If Content-Type is already specified in the headers, this parameter will be ignored.
+* contentType values correspond to Content-Type in the headers:
+  * json: "application/json;charset=UTF-8"
+  * urlencoded: "application/x-www-form-urlencoded;charset=UTF-8"
+  * formData: "multipart/form-data"
+  * text: "text/plain;charset=UTF-8"
+  * xml: "application/xml;charset=UTF-8"
+  * stream: "application/octet-stream"
 
 responseType
 
-* If this parameter is not specified, the response data will be the same as with fetch.
-* When this parameter is specified, it means that response data preprocessing is enabled, and it will return preprocessed synchronous data.
+* If this parameter is not specified, the response data obtained will be the same as with fetch.
+* When this parameter is specified, it means that response data preprocessing is enabled, and a preprocessed synchronous data will be returned.
 
   ```javascript
-  /* Retrieving data normally */
+  /* Normal data retrieval */
   xfetch("https://xxx.com")
   .then(async res => {
     let json = await res.json()
@@ -167,11 +167,11 @@ responseType
   })
   ```
 
-Other parameters are the same as with fetch.
+Other parameters are the same as fetch.
 
 ### xhrFetch
 
-#### Get
+#### Retrieval
 
 Script Tag: `xfetch.xhrFetch`
 
@@ -179,98 +179,32 @@ Module: `import { xhrFetch } from "@xlou/xfetch"`
 
 #### Usage
 
-```typescript
-xfetch("https://xxx.com", {
-  method: "post",
-  query: { // Converted to URL parameters
-    id: 1
-  },
-  data: { // Converted to request body parameters; if the body parameter is specified simultaneously, this parameter will be ineffective
-    name: "Tom",
-    age: 18
-  },
-  contentType: "json", // Specify the Content-Type in the request headers
-  responseType: "json" // Enable response data preprocessing; specify the type of response data
-})
-```
+Usage is the same as fetch, but it is implemented using XMLHttpRequest. It is recommended to use xfetch instead of this.
+
+Request parameters like cache, mode, signal, keepalive, redirect, integrity, referrer, and referrerPolicy are not effective.
+
+The body in the response parameters is of Blob type, not ReadableStream.
 
 #### Types
 
 ```typescript
-function xfetch(input: RequestInfo | URL, init?: XfetchInit | undefined): Promise<XfetchResponse>
+function xhrFetch(input: RequestInfo | URL, init?: RequestInit | undefined): Promise<XHRFetchResponse>;
 
-type RequestInfo = Request | string
-
-interface XfetchInit extends RequestInit {
-  query?: { [prop: string]: any }
-  data?: BodyInit | null | { [prop: string]: any }
-  contentType?: "json" | "urlencoded" | "formData" | "text" | "xml" | "stream"
-  responseType?: "json" | "text" | "blob" | "arrayBuffer" | "formData"
-}
-
-type BodyInit = ReadableStream | XMLHttpRequest
-
-BodyInit
-
-const ContentType: { [prop: string]: string } = {
-  json: "application/json;charset=UTF-8",
-  urlencoded: "application/x-www-form-urlencoded;charset=UTF-8",
-  formData: "multipart/form-data",
-  text: "text/plain;charset=UTF-8",
-  xml: "application/xml;charset=UTF-8",
-  stream: "application/octet-stream"
+interface XHRFetchResponse {
+  readonly body: Blob | null
+  readonly bodyUsed: boolean
+  readonly headers: any
+  readonly ok: boolean
+  readonly redirected: boolean
+  readonly status: number
+  readonly statusText: string
+  readonly type: string
+  readonly url: string
+  clone(): XHRFetchResponse
+  arrayBuffer(): Promise<ArrayBuffer>
+  blob(): Promise<Blob>
+  formData(): Promise<FormData>
+  json(): Promise<any>
+  text(): Promise<string>
 }
 ```
-
-#### Parameter Description
-
-query
-
-* This parameter supports JavaScript objects, and it will be converted into URL parameter strings and appended to the request URL when sending the request.
-* It will not interfere with the original parameters in the request URL.
-
-data
-
-* When sending a request, it will be converted into a body parameter based on the Content-Type value in the headers.
-* If the body parameter is specified simultaneously, this parameter will be ineffective.
-* This parameter supports general JavaScript objects:
-  * When the Content-Type is application/json, data will be converted into a JSON string.
-  * When the Content-Type is application/x-www-form-urlencoded, data will be converted into a URL-encoded string.
-  * When the Content-Type is multipart/form-data, data will be converted into FormData.
-  * If data can be converted into JSON, and Content-Type is not specified, the Content-Type will be set to application/json.
-
-contentType
-
-* Specify the Content-Type in the request headers.
-* If the Content-Type is already specified in the headers, this parameter will be ineffective.
-* The contentType values correspond to the Content-Type in the headers:
-  * json:&ensp; "application/json;charset=UTF-8"
-  * urlencoded:&ensp; "application/x-www-form-urlencoded;charset=UTF-8"
-  * formData:&ensp; "multipart/form-data"
-  * text:&ensp; "text/plain;charset=UTF-8"
-  * xml:&ensp; "application/xml;charset=UTF-8"
-  * stream:&ensp; "application/octet-stream"
-
-responseType
-
-* If this parameter is not specified, the response data will be the same as with fetch.
-* When this parameter is specified, it means that response data preprocessing is enabled, and it will return preprocessed synchronous data.
-
-  ```javascript
-  /* Retrieving data normally */
-  xfetch("https://xxx.com")
-  .then(async res => {
-    let json = await res.json()
-  })
-
-  /* Specifying responseType as json */
-  xfetch("https://xxx.com", {
-    responseType: "json"
-  })
-  .then(res => {
-    let json = res.jsonSync
-    /* If responseType is set to blob, use blobSync, and so on */
-  })
-  ```
-
-Other parameters are the same as with fetch.

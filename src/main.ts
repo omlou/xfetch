@@ -191,8 +191,8 @@ export function xfetch(input: RequestInfo | URL, init?: XfetchInit | undefined):
   return new Promise(function (resolve, reject) {
     finalFetch(input, init)
       .then((response: any) => {
-        const response1 = response.clone()
-        response1[responseType]()
+        const responseClone = response.clone()
+        responseClone[responseType]()
           .then((res: string) => {
             response[responseType + "Sync"] = res
             resolve(response)

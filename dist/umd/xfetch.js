@@ -408,8 +408,8 @@
         return new Promise(function (resolve, reject) {
             finalFetch(input, init)
                 .then((response) => {
-                const response1 = response.clone();
-                response1[responseType]()
+                const responseClone = response.clone();
+                responseClone[responseType]()
                     .then((res) => {
                     response[responseType + "Sync"] = res;
                     resolve(response);

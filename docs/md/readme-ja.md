@@ -8,19 +8,19 @@
 
 ## 紹介
 
-* fetchの使用を簡素化し、迅速化します。
-* ブラウザ環境がfetchに対応していなくても心配いりません。古いブラウザを使用している場合、xfetchはXMLHttpRequestを使用してfetchをシミュレートします。
-* ネイティブの動作を尊重し、パフォーマンスに焦点を当てています。
+* fetchの使用を簡略化し、高速化します。
+* ブラウザ環境がfetchをサポートしていなくても心配しないでください。古いブラウザを使用している場合、xfetchはXMLHttpRequestを使用してfetchをエミュレートします。
+* ネイティブの実装を尊重し、パフォーマンスを優先します。
 
-## 使用法
+## 使い方
 
 ### スクリプトタグを使用してインポート
 
 ```html
-<script src="https://unpkg.com/@xlou/xfetch@1.0.2/dist/umd/xfetch.min.js"></script>
-<!-- ローカルにダウンロードして使用することをお勧めします -->
+<script src="https://unpkg.com/@xlou/xfetch@1.0.3/dist/umd/xfetch.min.js"></script>
+<!-- ローカルでスクリプトをダウンロードして使用することをお勧めします -->
 <script>
-  /* このJSファイルをインポートした後、xfetchオブジェクトがウィンドウに割り当てられます */
+  /* このスクリプトを含めた後、xfetchオブジェクトがウィンドウに割り当てられます */
   xfetch("https://xxx.com", {
     method: "post",
     query: {
@@ -69,9 +69,9 @@ xfetch("https://xxx.com", {
 
 #### 取得
 
-スクリプトタグ： `window.xfetch`
+スクリプトタグ: `window.xfetch`
 
-モジュール： `import xfetch from "@xlou/xfetch"`
+モジュール: `import xfetch from "@xlou/xfetch"`
 
 #### 使用法
 
@@ -81,11 +81,11 @@ xfetch("https://xxx.com", {
   query: { // URLパラメータに変換
     id: 1
   },
-  data: { // リクエストボディパラメータに変換; ボディパラメータが同時に指定された場合、このパラメータは無効になります
+  data: { // ボディパラメータに変換；同時にボディが指定された場合、このパラメータは無視されます
     name: "Tom",
     age: 18
   },
-  contentType: "json", // リクエストヘッダーのContent-Typeを指定
+  contentType: "json", // リクエストヘッダのContent-Typeを指定
   responseType: "json" // レスポンスデータの前処理を有効にし、レスポンスデータのタイプを指定
 })
 ```
@@ -120,52 +120,52 @@ const ContentType: { [prop: string]: string } = {
 
 query
 
-* このパラメータはJavaScriptオブジェクトをサポートし、リクエストを送信する際にURLパラメータ文字列に変換され、リクエストURLに追加されます。
-* リクエストURLの元のパラメータに干渉しません。
+* このパラメータはJavaScriptオブジェクトをサポートし、リクエストURLに追加されるURLパラメータ文字列に変換されます。
+* リクエストURLの既存のパラメータに干渉しません。
 
 data
 
 * リクエストを送信する際、ヘッダー内のContent-Typeの値に基づいてボディパラメータに変換されます。
-* ボディパラメータが同時に指定された場合、このパラメータは無効になります。
-* このパラメータは一般的なJavaScriptオブジェクトをサポートします:
-  * Content-Typeがapplication/jsonの場合、データはJSON文字列に変換されます。
-  * Content-Typeがapplication/x-www-form-urlencodedの場合、データはURLエンコードされた文字列に変換されます。
-  * Content-Typeがmultipart/form-dataの場合、データはFormDataに変換されます。
-  * データがJSONに変換でき、Content-Typeが指定されていない場合、Content-Typeはapplication/jsonに設定されます。
+* ボディパラメータが同時に指定された場合、このパラメータは無視されます。
+* このパラメータは一般的なJavaScriptオブジェクトをサポートします。
+  * Content-Typeが"application/json"の場合、dataはJSON文字列に変換されます。
+  * Content-Typeが"application/x-www-form-urlencoded"の場合、dataはURLエンコードされた文字列に変換されます。
+  * Content-Typeが"multipart/form-data"の場合、dataはFormDataに変換されます。
+  * dataがJSONに変換でき、Content-Typeが指定されていない場合、Content-Typeは"application/json"に設定されます。
 
 contentType
 
-* リクエストヘッダーのContent-Typeを指定します。
-* ヘッダー内で既にContent-Typeが指定されている場合、このパラメータは無効になります。
-* contentTypeの値はヘッダー内のContent-Typeに対応します:
-  * json:&ensp; "application/json;charset=UTF-8"
-  * urlencoded:&ensp; "application/x-www-form-urlencoded;charset=UTF-8"
-  * formData:&ensp; "multipart/form-data"
-  * text:&ensp; "text/plain;charset=UTF-8"
-  * xml:&ensp; "application/xml;charset=UTF-8"
-  * stream:&ensp; "application/octet-stream"
+* リクエストヘッダのContent-Typeを指定します。
+* 既にヘッダーでContent-Typeが指定されている場合、このパラメータは無視されます。
+* contentTypeの値はヘッダーのContent-Typeに対応します：
+  * json: "application/json;charset=UTF-8"
+  * urlencoded: "application/x-www-form-urlencoded;charset=UTF-8"
+  * formData: "multipart/form-data"
+  * text: "text/plain;charset=UTF-8"
+  * xml: "application/xml;charset=UTF-8"
+  * stream: "application/octet-stream"
 
 responseType
 
-*
+* このパラメータが指定されていない場合、取得されたレスポンスデータはfetchと同じです。
+* このパラメ
 
- このパラメータが指定されていない場合、レスポンスデータはfetchと同じです。
-* このパラメータが指定されている場合、レスポンスデータの前処理が有効になり、前処理された同期データが返されます。
+ータを指定すると、レスポンスデータの前処理が有効になり、前処理済みの同期データが返されます。
 
   ```javascript
-  /* データを正常に取得する */
+  /* 通常のデータの取得 */
   xfetch("https://xxx.com")
   .then(async res => {
     let json = await res.json()
   })
 
-  /* responseTypeをjsonに指定 */
+  /* responseTypeをjsonに指定した場合 */
   xfetch("https://xxx.com", {
     responseType: "json"
   })
   .then(res => {
     let json = res.jsonSync
-    /* responseTypeがblobに設定されている場合、blobSyncを使用し、同様にします */
+    /* responseTypeがblobに設定されている場合、blobSyncを使用します。 */
   })
   ```
 
@@ -181,96 +181,32 @@ responseType
 
 #### 使用法
 
-```typescript
-xfetch("https://xxx.com", {
-  method: "post",
-  query: { // URLパラメータに変換
-    id: 1
-  },
-  data: { // リクエストボディパラメータに変換; ボディパラメータが同時に指定された場合、このパラメータは無効になります
-    name: "Tom",
-    age: 18
-  },
-  contentType: "json", // リクエストヘッダーのContent-Typeを指定
-  responseType: "json" // レスポンスデータの前処理を有効にし、レスポンスデータのタイプを指定
-})
-```
+使用法はfetchと同じですが、XMLHttpRequestを使用して実装されています。この代わりにこの機能を使用することをお勧めします。
+
+キャッシュ、モード、シグナル、キープアライブ、リダイレクト、整合性、リファラ、リファラポリシーなどのリクエストパラメータは無効です。
+
+応答パラメータ内のボディはReadableStreamではなくBlob型です。
 
 #### タイプ
 
-```typescript
-function xfetch(input: RequestInfo | URL, init?: XfetchInit | undefined): Promise<XfetchResponse>
+``` typescript
+function xhrFetch(input: RequestInfo | URL, init?: RequestInit | undefined): Promise<XHRFetchResponse>;
 
-type RequestInfo = Request | string
-
-interface XfetchInit extends RequestInit {
-  query?: { [prop: string]: any }
-  data?: BodyInit | null | { [prop: string]: any }
-  contentType?: "json" | "urlencoded" | "formData" | "text" | "xml" | "stream"
-  responseType?: "json" | "text" | "blob" | "arrayBuffer" | "formData"
-}
-
-type BodyInit = ReadableStream | XMLHttpRequestBodyInit
-
-const ContentType: { [prop: string]: string } = {
-  json: "application/json;charset=UTF-8",
-  urlencoded: "application/x-www-form-urlencoded;charset=UTF-8",
-  formData: "multipart/form-data",
-  text: "text/plain;charset=UTF-8",
-  xml: "application/xml;charset=UTF-8",
-  stream: "application/octet-stream"
+interface XHRFetchResponse {
+  readonly body: Blob | null
+  readonly bodyUsed: boolean
+  readonly headers: any
+  readonly ok: boolean
+  readonly redirected: boolean
+  readonly status: number
+  readonly statusText: string
+  readonly type: string
+  readonly url: string
+  clone(): XHRFetchResponse
+  arrayBuffer(): Promise<ArrayBuffer>
+  blob(): Promise<Blob>
+  formData(): Promise<FormData>
+  json(): Promise<any>
+  text(): Promise<string>
 }
 ```
-
-#### パラメータの説明
-
-query
-
-* このパラメータはJavaScriptオブジェクトをサポートし、リクエストを送信する際にURLパラメータ文字列に変換され、リクエストURLに追加されます。
-* リクエストURLの元のパラメータに干渉しません。
-
-data
-
-* リクエストを送信する際、ヘッダー内のContent-Typeの値に基づいてボディパラメータに変換されます。
-* ボディパラメータが同時に指定された場合、このパラメータは無効になります。
-* このパラメータは一般的なJavaScriptオブジェクトをサポートします:
-  * Content-Typeがapplication/jsonの場合、データはJSON文字列に変換されます。
-  * Content-Typeがapplication/x-www-form-urlencodedの場合、データはURLエンコードされた文字列に変換されます。
-  * Content-Typeがmultipart/form-dataの場合、データはFormDataに変換されます。
-  * データがJSONに変換でき、Content-Typeが指定されていない場合、Content-Typeはapplication/jsonに設定されます。
-
-contentType
-
-* リクエストヘッダーのContent-Typeを指定します。
-* ヘッダー内で既にContent-Typeが指定されている場合、このパラメータは無効になります。
-* contentTypeの値はヘッダー内のContent-Typeに対応します:
-  * json:&ensp; "application/json;charset=UTF-8"
-  * urlencoded:&ensp; "application/x-www-form-urlencoded;charset=UTF-8"
-  * formData:&ensp; "multipart/form-data"
-  * text:&ensp; "text/plain;charset=UTF-8"
-  * xml:&ensp; "application/xml;charset=UTF-8"
-  * stream:&ensp; "application/octet-stream"
-
-responseType
-
-* このパラメータが指定されていない場合、レスポンスデータはfetchと同じです。
-* このパラメータが指定されている場合、レスポンスデータの前処理が有効になり、前処理された同期データが返されます。
-
-  ```javascript
-  /* データを正常に取得する */
-  xfetch("https://xxx.com")
-  .then(async res => {
-    let json = await res.json()
-  })
-
-  /* responseTypeをjsonに指定 */
-  xfetch("https://xxx.com", {
-    responseType: "json"
-  })
-  .then(res => {
-    let json = res.jsonSync
-    /* responseTypeがblobに設定されている場合、blobSyncを使用し、同様にします */
-  })
-  ```
-
-その他のパラメータはfetchと同じです。

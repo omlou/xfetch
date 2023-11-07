@@ -1,6 +1,6 @@
 {
   "name": "@xlou/xfetch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "./dist/es/xfetch.min.js",
   "module": "./dist/es/xfetch.min.js",
   "browser": "./dist/umd/xfetch.min.js",
